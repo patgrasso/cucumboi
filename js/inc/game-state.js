@@ -3,14 +3,27 @@
 define(['Phaser'], function (Phaser) {
     'use strict';
 
-    var player, platforms, cursors, ground, ledge,
+    var player, platforms, cursors, ground, ledge, score, scoreText,
         gameState = function (game) {};
+		
+	function collectStar (player, star) {
+
+    // Removes the star from the screen
+		star.kill();
+	
+	//  Add and update the score
+		score += 10;
+		scoreText.text = 'Score: ' + score;
+
+	}
 
     /**
      * gameState:create
      * [description]
      */
     gameState.prototype.create = function () {
+	
+		var stars;
 
         //  We're going to be using physics, so enable the Arcade Physics system
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -56,8 +69,24 @@ define(['Phaser'], function (Phaser) {
 
         //  Our controls.
         cursors = this.game.input.keyboard.createCursorKeys();
-    };
+		
+		stars = this.game.add.group();
 
+		stars.enableBody = true;
+
+		//  Here we'll create 12 of them evenly spaced apart
+		for (var i = 0; i < 12; i++)
+		{
+			//  Create a star inside of the 'stars' group
+			var star = stars.create(i * 70, 0, 'star');
+
+			//  Let gravity do its thing
+			star.body.gravity.y = 6;
+
+			//  This just gives each star a slightly random bounce value
+			star.body.bounce.y = 0.7 + Math.random() * 0.2;
+		}
+    };
 
     /**
      * gameState:update
