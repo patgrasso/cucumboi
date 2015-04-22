@@ -3,27 +3,27 @@
 define(['Phaser'], function (Phaser) {
     'use strict';
 
-    var player, platforms, cursors, ground, ledge, score, scoreText,
+    var player, platforms, cursors, ground, ledge, score, stars, scoreText,
         gameState = function (game) {};
-		
-	function collectStar (player, star) {
 
-    // Removes the star from the screen
-		star.kill();
-	
-	//  Add and update the score
-		score += 10;
-		scoreText.text = 'Score: ' + score;
 
-	}
+    function collectStar(player, star) {
+
+        // Removes the star from the screen
+        star.kill();
+
+        //  Add and update the score
+        score += 10;
+        scoreText.text = 'Score: ' + score;
+    }
 
     /**
      * gameState:create
      * [description]
      */
     gameState.prototype.create = function () {
-	
-		var stars;
+
+        score = 0;
 
         //  We're going to be using physics, so enable the Arcade Physics system
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -67,25 +67,30 @@ define(['Phaser'], function (Phaser) {
         player.animations.add('left', [0, 1, 2, 3], 10, true);
         player.animations.add('right', [5, 6, 7, 8], 10, true);
 
+        scoreText = this.game.add.text(16, 16, 'score: 0', {
+            fontSize: '32px',
+            fill: '#000'
+        });
+
         //  Our controls.
         cursors = this.game.input.keyboard.createCursorKeys();
-		
-		stars = this.game.add.group();
 
-		stars.enableBody = true;
+        stars = this.game.add.group();
 
-		//  Here we'll create 12 of them evenly spaced apart
-		for (var i = 0; i < 12; i++)
-		{
-			//  Create a star inside of the 'stars' group
-			var star = stars.create(i * 70, 0, 'star');
+        stars.enableBody = true;
 
-			//  Let gravity do its thing
-			star.body.gravity.y = 6;
+        //  Here we'll create 12 of them evenly spaced apart
+        for (var i = 0; i < 12; i++)
+        {
+            //  Create a star inside of the 'stars' group
+            var star = stars.create(i * 70, 0, 'star');
 
-			//  This just gives each star a slightly random bounce value
-			star.body.bounce.y = 0.7 + Math.random() * 0.2;
-		}
+            //  Let gravity do its thing
+            star.body.gravity.y = 6;
+
+            //  This just gives each star a slightly random bounce value
+            star.body.bounce.y = 0.7 + Math.random() * 0.2;
+        }
     };
 
     /**
@@ -96,6 +101,9 @@ define(['Phaser'], function (Phaser) {
 
         //  Collide the player and the stars with the platforms
         this.game.physics.arcade.collide(player, platforms);
+        this.game.physics.arcade.collide(stars, platforms);
+
+        this.game.physics.arcade.overlap(stars, player, collectStar);
 
         //  Reset the players velocity (movement)
         player.body.velocity.x = 0;
