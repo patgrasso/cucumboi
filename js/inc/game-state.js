@@ -28,7 +28,7 @@ define(['Phaser'], function (Phaser) {
         //  We're going to be using physics, so enable the Arcade Physics system
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-        //  A simple background for our app.game
+        //  A simple background for our game
         this.game.add.sprite(0, 0, 'sky');
 
         //  The platforms group contains the ground and the 2 ledges we can jump on
@@ -39,7 +39,7 @@ define(['Phaser'], function (Phaser) {
         // Here we create the ground.
         ground = platforms.create(0, this.game.world.height - 64, 'ground');
 
-        //  Scale it to fit the width of the app.game (the original sprite is 400x32 in size)
+        //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
         ground.scale.setTo(2, 2);
 
         //  This stops it from falling away when you jump on it
@@ -58,8 +58,7 @@ define(['Phaser'], function (Phaser) {
         //  We need to enable physics on the player
         this.game.physics.arcade.enable(player);
 
-        //  Player physics properties. Give the little guy a slight bounce.
-        player.body.bounce.y = 0.2;
+        //  Player physics properties.
         player.body.gravity.y = 300;
         player.body.collideWorldBounds = true;
 
@@ -67,6 +66,7 @@ define(['Phaser'], function (Phaser) {
         player.animations.add('left', [0, 1, 2, 3], 10, true);
         player.animations.add('right', [5, 6, 7, 8], 10, true);
 
+		// Initialize the score text
         scoreText = this.game.add.text(16, 16, 'score: 0', {
             fontSize: '32px',
             fill: '#000'
@@ -103,6 +103,7 @@ define(['Phaser'], function (Phaser) {
         this.game.physics.arcade.collide(player, platforms);
         this.game.physics.arcade.collide(stars, platforms);
 
+		// Allows the player to collect stars and have them get removed from the screen
         this.game.physics.arcade.overlap(stars, player, collectStar);
 
         //  Reset the players velocity (movement)
