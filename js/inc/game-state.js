@@ -26,7 +26,7 @@ define(['Phaser'], function (Phaser) {
         score = 0;
 
         // enable the Arcade Physics system
-        this.game.physics.cucumbertSystem(Phaser.Physics.ARCADE);
+        this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
         // background
         this.game.add.sprite(0, 0, 'sky');
