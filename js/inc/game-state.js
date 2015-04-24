@@ -56,8 +56,8 @@ define(['Phaser'], function (Phaser) {
         player.body.collideWorldBounds = true;
 
         //  Our two animations, walking left and right.
-        player.animations.add('left', [0, 1, 2, 3], 10, true);
-        player.animations.add('right', [5, 6, 7, 8], 10, true);
+        //player.animations.add('left', [0, 1, 2, 3], 10, true);
+        //player.animations.add('right', [5, 6, 7, 8], 10, true);
 
 		// initialize the score text
         scoreText = this.game.add.text(16, 16, 'score: 0', {
@@ -100,17 +100,17 @@ define(['Phaser'], function (Phaser) {
         if (cursors.left.isDown) {
             //  Move to the left
             player.body.velocity.x = -150;
-            player.animations.play('left');
+            //player.animations.play('left');
 			
         } else if (cursors.right.isDown) {
             //  Move to the right
             player.body.velocity.x = 150;
-            player.animations.play('right');
+            //player.animations.play('right');
 			
         } else {
             //  Stand still
             player.animations.stop();
-            player.frame = 4;
+            //player.frame = 4;
         }
 
         //  Allow the player to jump if they are touching the ground.
