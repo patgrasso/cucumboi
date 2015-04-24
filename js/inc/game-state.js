@@ -3,14 +3,14 @@
 define(['Phaser'], function (Phaser) {
     'use strict';
 
-    var player, platforms, cursors, ground, ledge, score, stars, scoreText,
+    var player, platforms, cursors, ground, ledge, score, cucumbers, scoreText,
         gameState = function (game) {};
 
 
-    function collectStar(player, star) {
+    function collectcucumber(player, cucumber) {
 
-        // Removes the star from the screen
-        star.kill();
+        // Removes the cucumber from the screen
+        cucumber.kill();
 
         //  Add and update the score
         score += 10;
@@ -26,7 +26,7 @@ define(['Phaser'], function (Phaser) {
         score = 0;
 
         // enable the Arcade Physics system
-        this.game.physics.startSystem(Phaser.Physics.ARCADE);
+        this.game.physics.cucumbertSystem(Phaser.Physics.ARCADE);
 
         // background
         this.game.add.sprite(0, 0, 'sky');
@@ -68,16 +68,16 @@ define(['Phaser'], function (Phaser) {
         // controls
         cursors = this.game.input.keyboard.createCursorKeys();
 
-        stars = this.game.add.group();
-        stars.enableBody = true;
+        cucumbers = this.game.add.group();
+        cucumbers.enableBody = true;
 
         // create 12 of them evenly spaced apart
         for (var i = 0; i < 12; i++)
         {
-            // create a star inside of the 'stars' group
-            var star = stars.create(i * 70, 0, 'star');
-            star.body.gravity.y = 500;
-            star.body.bounce.y = 0.7 + Math.random() * 0.2;
+            // create a cucumber inside of the 'cucumbers' group
+            var cucumber = cucumbers.create(i * 70, 0, 'cucumber');
+            cucumber.body.gravity.y = 500;
+            cucumber.body.bounce.y = 0.7 + Math.random() * 0.2;
         }
     };
 
@@ -87,12 +87,12 @@ define(['Phaser'], function (Phaser) {
      */
     gameState.prototype.update = function () {
 
-        //  collide the player and the stars with the platforms
+        //  collide the player and the cucumbers with the platforms
         this.game.physics.arcade.collide(player, platforms);
-        this.game.physics.arcade.collide(stars, platforms);
+        this.game.physics.arcade.collide(cucumbers, platforms);
 
-		// allows the player to collect stars and have them get removed from the screen
-        this.game.physics.arcade.overlap(stars, player, collectStar);
+		// allows the player to collect cucumbers and have them get removed from the screen
+        this.game.physics.arcade.overlap(cucumbers, player, collectcucumber);
 
         //  reset the players velocity (movement)
         player.body.velocity.x = 0;
