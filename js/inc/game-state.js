@@ -109,8 +109,8 @@ define(['Phaser'], function (Phaser) {
 			
         } else {
             //  Stand still
-            player.animations.stop();
-            //player.frame = 4;
+            //player.animations.stop();
+            player.frame = 0;
         }
 
         //  Allow the player to jump if they are touching the ground.
