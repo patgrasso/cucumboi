@@ -75,7 +75,7 @@ define(['Phaser'], function (Phaser) {
         for (var i = 0; i < 12; i++)
         {
             // create a cucumber inside of the 'cucumbers' group
-            var cucumber = cucumbers.create(i * 70, 0, 'cucumber');
+            var cucumber = cucumbers.create(i * 60, 0, 'cucumber');
             cucumber.body.gravity.y = 500;
             cucumber.body.bounce.y = 0.7 + Math.random() * 0.2;
         }
