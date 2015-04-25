@@ -75,7 +75,7 @@ define(['Phaser'], function (Phaser) {
         for (var i = 0; i < 12; i++)
         {
             // create a cucumber inside of the 'cucumbers' group
-            var cucumber = cucumbers.create(i * 60, 0, 'cucumber');
+            var cucumber = cucumbers.create(i * 70, 0, 'cucumber');
             cucumber.body.gravity.y = 500;
             cucumber.body.bounce.y = 0.7 + Math.random() * 0.2;
         }
@@ -110,7 +110,8 @@ define(['Phaser'], function (Phaser) {
         } else {
             //  Stand still
             //player.animations.stop();
-            player.frame = 0;
+			player.body.velocity.x = 0;
+			player.frame = 0;
         }
 
         //  Allow the player to jump if they are touching the ground.
