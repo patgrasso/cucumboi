@@ -9,7 +9,7 @@ define(function () {
         game.load.image('sky', 'assets/sky.png');
         game.load.image('ground', 'assets/platform.png');
         game.load.image('cucumber', 'assets/cucumber.png');
-        game.load.image('dude', 'assets/dude.png',);
+        game.load.image('dude', 'assets/dude.png');
     };
 
 
