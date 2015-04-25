@@ -22,21 +22,21 @@ define(['test'], function (test) {
         return gameState !== undefined;
     });
 
-    scenario('Score raises by 10 when star collected', function () {
+    scenario('Score raises by 10 when cucumber collected', function () {
         var beforeScore = gameState.getScore();
 
-        gameState.collectStar(gameState.player, gameState.stars.getAt(0));
+        gameState.collectCucumber(gameState.player, gameState.cucumbers.getAt(0));
         return gameState.getScore() === beforeScore + 10;
     });
 
-    scenario('Star disappears when it is collected', function () {
-        var starToCollect = gameState.stars.getAt(1);
+    scenario('Cucumber disappears when it is collected', function () {
+        var cucumberToCollect = gameState.cucumbers.getAt(1);
 
-        if (starToCollect.alive === false) {
+        if (cucumberToCollect.alive === false) {
             return false;
         }
-        gameState.collectStar(gameState.player, starToCollect);
-        return starToCollect.alive === false;
+        gameState.collectCucumber(gameState.player, cucumberToCollect);
+        return cucumberToCollect.alive === false;
     });
 
 

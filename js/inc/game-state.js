@@ -9,7 +9,7 @@ define(['Phaser', 'test'], function (Phaser, test) {
         testExports = test.register('game-state', exports);
 
 
-    function collectcucumber(player, cucumber) {
+    function collectCucumber(player, cucumber) {
 
         // Removes the cucumber from the screen
         cucumber.kill();
@@ -33,7 +33,7 @@ define(['Phaser', 'test'], function (Phaser, test) {
         score = 0;
 
         // enable the Arcade Physics system
-        this.game.physics.cucumbertSystem(Phaser.Physics.ARCADE);
+        this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
         // background
         this.game.add.sprite(0, 0, 'sky');
@@ -105,7 +105,7 @@ define(['Phaser', 'test'], function (Phaser, test) {
         this.game.physics.arcade.collide(cucumbers, platforms);
 
         // allows the player to collect cucumbers and have them get removed from the screen
-        this.game.physics.arcade.overlap(cucumbers, player, collectcucumber);
+        this.game.physics.arcade.overlap(cucumbers, player, collectCucumber);
 
         //  reset the players velocity (movement)
         player.body.velocity.x = 0;
@@ -131,7 +131,7 @@ define(['Phaser', 'test'], function (Phaser, test) {
     };
 
 
-    testExports.set('collectStar', collectStar);
+    testExports.set('collectCucumber', collectCucumber);
 
     exports.getScore = getScore;
     exports.gameState = gameState;
