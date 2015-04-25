@@ -1,5 +1,7 @@
 README
 
+Patrick Grasso, Nicholas Zubrycki, Nicholas Massa
+
 Instructions to play game:
 
 1) open a command line terminal
