@@ -9,7 +9,7 @@ define([
     return function () {
         var game = app.game;
 
-        game.state.add('play', gameState);
+        game.state.add('play', gameState.gameState);
         //game.state.add('menu', menuState);
         game.state.start('play', true, false);
     };

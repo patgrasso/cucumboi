@@ -1,10 +1,12 @@
 /*global define, app, game*/
 
-define(['Phaser'], function (Phaser) {
+define(['Phaser', 'test'], function (Phaser, test) {
     'use strict';
 
     var player, platforms, cursors, ground, ledge, score, stars, scoreText,
-        gameState = function (game) {};
+        gameState = function (game) {},
+        exports = {},
+        testExports = test.register('game-state', exports);
 
 
     function collectStar(player, star) {
@@ -16,6 +18,11 @@ define(['Phaser'], function (Phaser) {
         score += 10;
         scoreText.text = 'Score: ' + score;
     }
+
+    function getScore() {
+        return score;
+    }
+
 
     /**
      * gameState:create
@@ -54,6 +61,7 @@ define(['Phaser'], function (Phaser) {
 
         // The player and its setting
         player = this.game.add.sprite(32, this.game.world.height - 150, 'dude');
+        testExports.set('player', player);
 
         //  We need to enable physics on the player
         this.game.physics.arcade.enable(player);
@@ -74,14 +82,14 @@ define(['Phaser'], function (Phaser) {
 
         //  Our controls.
         cursors = this.game.input.keyboard.createCursorKeys();
-
         stars = this.game.add.group();
-
         stars.enableBody = true;
 
+        testExports.set('cursors', cursors);
+        testExports.set('stars', stars);
+
         //  Here we'll create 12 of them evenly spaced apart
-        for (var i = 0; i < 12; i++)
-        {
+        for (var i = 0; i < 12; i++) {
             //  Create a star inside of the 'stars' group
             var star = stars.create(i * 70, 0, 'star');
 
@@ -91,6 +99,8 @@ define(['Phaser'], function (Phaser) {
             //  This just gives each star a slightly random bounce value
             star.body.bounce.y = 0.7 + Math.random() * 0.2;
         }
+
+        app.fire('gameload');
     };
 
     /**
@@ -128,10 +138,14 @@ define(['Phaser'], function (Phaser) {
         //  Allow the player to jump if they are touching the ground.
         if (cursors.up.isDown && player.body.touching.down) {
             player.body.velocity.y = -350;
-
         }
     };
 
 
-    return gameState;
+    testExports.set('collectStar', collectStar);
+
+    exports.getScore = getScore;
+    exports.gameState = gameState;
+
+    return exports;
 });
