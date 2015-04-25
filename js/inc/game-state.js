@@ -1,10 +1,12 @@
 /*global define, app, game*/
 
-define(['Phaser'], function (Phaser) {
+define(['Phaser', 'test'], function (Phaser, test) {
     'use strict';
 
     var player, platforms, cursors, ground, ledge, score, cucumbers, scoreText,
-        gameState = function (game) {};
+        gameState = function (game) {},
+        exports = {},
+        testExports = test.register('game-state', exports);
 
 
     function collectcucumber(player, cucumber) {
@@ -16,6 +18,11 @@ define(['Phaser'], function (Phaser) {
         score += 10;
         scoreText.text = 'Score: ' + score;
     }
+
+    function getScore() {
+        return score;
+    }
+
 
     /**
      * gameState:create
@@ -50,6 +57,8 @@ define(['Phaser'], function (Phaser) {
         // player
         player = this.game.add.sprite(32, this.game.world.height - 150, 'dude');
         // enable physics on the player
+        testExports.set('player', player);
+
         this.game.physics.arcade.enable(player);
         // player physics properties
         player.body.gravity.y = 300;
@@ -59,7 +68,7 @@ define(['Phaser'], function (Phaser) {
         player.animations.add('left', [0, 1, 2, 3], 10, true);
         player.animations.add('right', [5, 6, 7, 8], 10, true);
 
-		// initialize the score text
+        //initialize the score text
         scoreText = this.game.add.text(16, 16, 'score: 0', {
             fontSize: '32px',
             fill: '#000'
@@ -67,9 +76,11 @@ define(['Phaser'], function (Phaser) {
 
         // controls
         cursors = this.game.input.keyboard.createCursorKeys();
+        testExports.set('cursors', cursors);
 
         cucumbers = this.game.add.group();
         cucumbers.enableBody = true;
+        testExports.set('cucumbers', cucumbers);
 
         // create 12 of them evenly spaced apart
         for (var i = 0; i < 12; i++)
@@ -79,6 +90,8 @@ define(['Phaser'], function (Phaser) {
             cucumber.body.gravity.y = 500;
             cucumber.body.bounce.y = 0.7 + Math.random() * 0.2;
         }
+
+        app.fire('gameload');
     };
 
     /**
@@ -91,7 +104,7 @@ define(['Phaser'], function (Phaser) {
         this.game.physics.arcade.collide(player, platforms);
         this.game.physics.arcade.collide(cucumbers, platforms);
 
-		// allows the player to collect cucumbers and have them get removed from the screen
+        // allows the player to collect cucumbers and have them get removed from the screen
         this.game.physics.arcade.overlap(cucumbers, player, collectcucumber);
 
         //  reset the players velocity (movement)
@@ -101,12 +114,10 @@ define(['Phaser'], function (Phaser) {
             //  Move to the left
             player.body.velocity.x = -150;
             player.animations.play('left');
-			
         } else if (cursors.right.isDown) {
             //  Move to the right
             player.body.velocity.x = 150;
             player.animations.play('right');
-			
         } else {
             //  Stand still
             player.animations.stop();
@@ -116,10 +127,14 @@ define(['Phaser'], function (Phaser) {
         //  Allow the player to jump if they are touching the ground.
         if (cursors.up.isDown && player.body.touching.down) {
             player.body.velocity.y = -350;
-
         }
     };
 
 
-    return gameState;
+    testExports.set('collectStar', collectStar);
+
+    exports.getScore = getScore;
+    exports.gameState = gameState;
+
+    return exports;
 });
