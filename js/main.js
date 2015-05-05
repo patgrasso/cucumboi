@@ -14,7 +14,7 @@ require([
 ], function (Phaser, preload, create, update) {
     'use strict';
 
-    app.game = new Phaser.Game(800, 600, Phaser.AUTO, '',
+    app.game = new Phaser.Game(640, 480, Phaser.AUTO, '',
         {
             preload: preload,
             create: create,

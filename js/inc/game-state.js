@@ -3,7 +3,7 @@
 define(['Phaser'], function (Phaser) {
     'use strict';
 
-    var player, platforms, cursors, ground, ledge, score, cucumbers, scoreText,
+    var player, platforms, cursors, ground, ledge, score, cucumbers, scoreText, sky, edgeTimer, jumpTimer, wasStanding,
         gameState = function (game) {};
 
 
@@ -16,6 +16,28 @@ define(['Phaser'], function (Phaser) {
         score += 10;
         scoreText.text = 'Score: ' + score;
     }
+	
+	function wrapPlatform(platform){
+	
+	if (platform.body.velocity.x < 0 && platform.x <= -160)
+        {
+            platform.x = 640;
+        }
+    else if (platform.body.velocity.x > 0 && platform.x >= 640)
+        {
+            platform.x = -160;
+        }	
+	
+	}
+	
+	function setFriction(player, platform){
+	
+		if (platform.key === 'ice-platform')
+			{
+				player.body.x -= platform.body.x - platform.body.prev.x;
+			}
+	
+	}
 
     /**
      * gameState:create
@@ -24,40 +46,73 @@ define(['Phaser'], function (Phaser) {
     gameState.prototype.create = function () {
 
         score = 0;
-
+		edgeTimer = 0;
+		jumpTimer = 0;
+		wasStanding = false;
+		
         // enable the Arcade Physics system
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
         // background
-        this.game.add.sprite(0, 0, 'sky');
+        this.game.stage.backgroundColor = '#2f9acc';
+		//clouds
+		this.game.sky = this.game.add.tileSprite(0, 0, 640, 480, 'clouds');
+		this.game.sky.fixedToCamera = true;
+		//trees
+		this.game.add.sprite(0, 1906, 'trees');
+		
 
         // platforms group contains the ground and the 2 ledges we can jump on
-        platforms = this.game.add.group();
+        this.game.platforms = this.game.add.physicsGroup();
         // enable physics for any object that is created in this group
-        platforms.enableBody = true;
+        this.game.platforms.enableBody = true;
+		//this.game.platforms.setAll('body.allowGravity', false);
+		//this.game.platforms.setAll('body.immovable', true);
+		
+		var x = 0;
+		var y = 64;
+		
+		for (var i = 0; i < 19; i++)
+            {
+                var type = i % 2 === 1 ? 'platform' : 'ice-platform';
+                var platform = this.game.platforms.create(x, y, type);
+
+                //  Set a random speed between 50 and 200
+                platform.body.velocity.x = 200;
+				platform.body.immovable = true;
+				platform.body.allowGravity = false;
+
+                //  Inverse it?
+                if (Math.random() > 0.5)
+                {
+                    platform.body.velocity.x *= -1;
+                }
+
+                x += 200;
+
+                if (x >= 600)
+                {
+                    x = 0;
+                }
+
+                y+= 125;
+            }
 
         // ground
-        ground = platforms.create(0, this.game.world.height - 64, 'ground');
-        ground.scale.setTo(2, 2);
+        ground = this.game.platforms.create(0, this.game.world.height-1, 'ground');
+        ground.scale.setTo(7, 2);
         ground.body.immovable = true;
 
-        // two ledges
-        ledge = platforms.create(400, 400, 'ground');
-        ledge.body.immovable = true;
-        ledge = platforms.create(-150, 250, 'ground');
-        ledge.body.immovable = true;
-
         // player
-        player = this.game.add.sprite(32, this.game.world.height - 150, 'dude');
+        player = this.game.add.sprite(320, 200, 'dude');	
         // enable physics on the player
         this.game.physics.arcade.enable(player);
         // player physics properties
         player.body.gravity.y = 300;
         player.body.collideWorldBounds = true;
+		this.camera.follow(player);
+		
 
-        //  Our two animations, walking left and right.
-        //player.animations.add('left', [0, 1, 2, 3], 10, true);
-        //player.animations.add('right', [5, 6, 7, 8], 10, true);
 
 		// initialize the score text
         scoreText = this.game.add.text(16, 16, 'score: 0', {
@@ -72,7 +127,7 @@ define(['Phaser'], function (Phaser) {
         cucumbers.enableBody = true;
 
         // create 12 of them evenly spaced apart
-        for (var i = 0; i < 12; i++)
+        for (var i = 0; i < 9; i++)
         {
             // create a cucumber inside of the 'cucumbers' group
             var cucumber = cucumbers.create(i * 70, 0, 'cucumber');
@@ -86,25 +141,30 @@ define(['Phaser'], function (Phaser) {
      * [description]
      */
     gameState.prototype.update = function () {
+	
+		this.game.sky.tilePosition.y = -(this.camera.y * 0.7);
+		this.game.platforms.forEach(wrapPlatform, this.game.platforms);
+		
+		this.game.physics.arcade.collide(player, this.game.platforms, this.game.setfriction, null, this);
 
         //  collide the player and the cucumbers with the platforms
-        this.game.physics.arcade.collide(player, platforms);
-        this.game.physics.arcade.collide(cucumbers, platforms);
+       // this.game.physics.arcade.collide(player, this.game.platforms);
+       // this.game.physics.arcade.collide(cucumbers, this.game.platforms);
 
 		// allows the player to collect cucumbers and have them get removed from the screen
         this.game.physics.arcade.overlap(cucumbers, player, collectcucumber);
-
+		
         //  reset the players velocity (movement)
         player.body.velocity.x = 0;
 
         if (cursors.left.isDown) {
             //  Move to the left
-            player.body.velocity.x = -150;
+            player.body.velocity.x = -200;
             //player.animations.play('left');
 			
         } else if (cursors.right.isDown) {
             //  Move to the right
-            player.body.velocity.x = 150;
+            player.body.velocity.x = 200;
             //player.animations.play('right');
 			
         } else {
@@ -116,7 +176,7 @@ define(['Phaser'], function (Phaser) {
 
         //  Allow the player to jump if they are touching the ground.
         if (cursors.up.isDown && player.body.touching.down) {
-            player.body.velocity.y = -350;
+            player.body.velocity.y = -320;
 
         }
     };
