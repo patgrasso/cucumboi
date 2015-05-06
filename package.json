@@ -1,0 +1,25 @@
+{
+  "name": "cucumboi",
+  "version": "1.0.0",
+  "description": "A game made with love and cucumber",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.12.3",
+    "express": "^4.12.3",
+    "mongoose": "^4.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "cucumber"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/patgrasso/cucumboi.git"
+  },
+  "author": "Patrick Grasso, Nicholas Massa, Nicholas Zubrycki",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/patgrasso/cucumboi/issues"
+  },
+  "homepage": "https://github.com/patgrasso/cucumboi"
+}
