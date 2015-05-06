@@ -184,7 +184,27 @@ define(['Phaser'], function (Phaser) {
 
         }
     };
-
-
+	
+	/**
+     * gameState:shutdown
+     * [description]
+     */
+    gameState.prototype.shutdown = function () {
+	
+	    var player = null; 
+		var platforms = null;
+		var cursors = null;
+		var ground = null;
+		var score = null;
+		var cucumbers = null;
+		var scoreText = null;
+		var sky = null;
+		var edgeTimer = null;
+		var jumpTimer = null;
+		var wasStanding = null;
+		
+	
+	};
+	
     return gameState;
 });
