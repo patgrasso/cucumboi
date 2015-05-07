@@ -13,6 +13,7 @@ define(['Phaser', 'inc/game-state'], function (Phaser, gameState) {
             this.buttontext = game.add.text(315, 100, 'You Win!', { font: "32px Arial", fill: "#FFFFFF", align: "center" });
             this.buttontext.fixedToCamera = true;
 
+
             /*var htmlbody = document.getElementsByTagName("BODY");
               var input = document.createElement('input'); 
               input.type = "text"; 
@@ -23,9 +24,11 @@ define(['Phaser', 'inc/game-state'], function (Phaser, gameState) {
               */
             var container = document.createElement('div');
             container.setAttribute('id', 'container');
-            var submit_name  = '<form id="scoreForm"><input id="name" type="text" name="name" placeholder="Your Name Here"><input id="sub-butt" type="submit" value="Submit"></form>';
-            container.innerHTML = submit_name;
+            var submit_name  = '<form id="scoreForm"><input id="name" type="text" name="firstname" placeholder="Your Name Here"><input id="sub-butt" type="submit" value="Submit"></form> <a id="hs" href="/gethighscores/"> View High Scores </a>';
+			container.innerHTML = submit_name;
             document.body.appendChild(container);
+			document.getElementById("hs").setAttribute("style",
+				"font-size: 15px; color: black; background: white; text-decoration: none; padding: 6px; border-radius: 2px; font-family: arial; margin-top: 15px; margin-left: 95px;");
             document.getElementById("sub-butt").setAttribute("style",
                 "padding: 9px; position: absolute; top: 0px; left: 335px; background-color: white; border-radius: 2px; border: 2px;");
             document.getElementById("name").setAttribute("style",
@@ -49,11 +52,10 @@ define(['Phaser', 'inc/game-state'], function (Phaser, gameState) {
                 return false;
             });
 
-
             this.buttontext = game.add.text(250, 300, 'Your score was ' + gameState.getScore(), { font: "32px Arial", fill: "#FFFFFF", align: "center" });
             this.buttontext.fixedToCamera = true;
 
-            this.button = game.add.button(380, 500, 'startButton', function () { game.state.start('play'); }, this);
+            this.button = game.add.button(380, 500, 'startButton', function () { game.state.start('play'); document.getElementById('container').parentNode.removeChild(container);}, this);
             this.button.anchor.setTo(0.5, 0.5);
             this.button.fixedToCamera = true;
 
