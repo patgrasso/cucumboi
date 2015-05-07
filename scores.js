@@ -36,7 +36,7 @@ function getScore(name, callback) {
     ScoreDetails.findOne({
         name: name
     }, function (err, data) {
-        if (err || !data) {
+        if (err || data == null) {
             callback(null);
         }
         callback(data.score);

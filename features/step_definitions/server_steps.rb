@@ -1,32 +1,26 @@
-Given /^the input "(.*)"$/ do |arg|
-    @input=arg #May need to change to curl call here and input as a name
-end
-
-When /^The Database is run and a score is added$/ do
-    @output=`curl --request POST 'http://localhost:8000/highscores' --data "name=pat&score=10"` #MUST FIX must do db.cucumboi.findOne('name') can find by using regex: take char b/n "=" pat "&"
-    #puts @output
+Given /^the name "(.*)" and score "(.*)"$/ do |arg1, arg2|
+    @name=arg1
+    @score=arg2
 end
 
 
-Then /^the output should be "(.*)"$/ do |correct_output|
-    	file = File.open(correct_output, "rb")
-	contents = file.read
-	file.close
-	#puts contents
-	raise ('wrong answer!!!!') unless (@output <=> contents) == 0 
+# Storing Scores
+When /^the server is running$/ do
+    `curl --request POST 'http://localhost:8000/highscores' --data "name=#{@name}&score=#{@score}" --silent`
 end
 
-#!!!!!
-=begin
-
-When /^the calculator is run$/ do
-   @output = `ruby calc.rb #{@input}`
-   raise('calculator failed') unless $?.success?
-end
-   
-Then /^the output should be "(.*)"$/ do |correct_output|
-   raise ('wrong answer!!!') unless @output == correct_output
+Then /^a call to \/getscore of "(.*)" should return "(.*)"$/ do |eman, expected|
+    @output=`curl --request GET 'http://localhost:8000/getscore' --data "name=#{@name}" --silent`
+    raise 'wrong value returned!' unless @output == expected
 end
 
-=end
-#!!!!!!
+
+
+# Retrieving Scores
+When /^the server is running and we send in the score$/ do
+    @output=`curl --request POST 'http://localhost:8000/highscores' --data "name=#{@name}&score=#{@score}" --silent`
+end
+
+Then /^the return data should be "(.*)"$/ do |expected|
+    raise 'did not receive the correct response!' unless @output == expected
+end

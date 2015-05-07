@@ -20,9 +20,10 @@ app.post('/highscores', function (req, res) {
     scores.insertScore(req.body.name, req.body.score, res);
 });
 
-app.post('/getscore', function (req, res) {
+app.get('/getscore', function (req, res) {
+    console.log(req.body);
     scores.getScore(req.body.name, function (score) {
-        res.send(score);
+        res.send(score + '');
     });
 });
 
