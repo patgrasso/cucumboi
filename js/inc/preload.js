@@ -10,6 +10,7 @@ define(function () {
         game.load.image('ground', 'assets/platform.png');
         game.load.image('cucumber', 'assets/cucumber.png');
         game.load.image('dude', 'assets/dude.png');
+		game.load.image('startButton', 'assets/grey_button00.png');
     };
 
 
