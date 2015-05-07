@@ -15,6 +15,9 @@ require([
 ], function (Phaser, preload, create, update, units) {
     'use strict';
 
+
+    app.MAXSCORE = 120;
+
     app.game = new Phaser.Game(800, 600, Phaser.AUTO, '',
         {
             preload: preload,

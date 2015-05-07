@@ -129,6 +129,10 @@ define(['Phaser', 'test'], function (Phaser, test) {
         if (cursors.up.isDown && player.body.touching.down) {
             player.body.velocity.y = -350;
         }
+
+        if (getScore() >= app.MAXSCORE) {
+            this.game.state.start('end', true, false);
+        }
     };
 
 
