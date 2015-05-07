@@ -1,4 +1,4 @@
-README
+<h1>README</h1>
 
 Patrick Grasso, Nicholas Zubrycki, Nicholas Massa
 
@@ -6,13 +6,17 @@ Patrick Grasso, Nicholas Zubrycki, Nicholas Massa
 *MongoDB* (install from their website)
 
 In the mongo shell (if further instructions needed, contact us), enter
+<br>
 `use Cucumboi`
+<br>
 `db.createCollection('scores', {})`
+<br>
 `db.scores.insert({ name: 'test', score: 1 })`
 
 *Node* (install from their website, comes with *npm*)
 
 `cd cucumboi`
+<br>
 `npm update`
 
 
