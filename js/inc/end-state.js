@@ -1,4 +1,4 @@
-/*global define, app*/
+/*global define, app, $, document*/
 
 define(['Phaser', 'inc/game-state'], function (Phaser, gameState) {
     'use strict';
@@ -25,12 +25,27 @@ define(['Phaser', 'inc/game-state'], function (Phaser, gameState) {
 
             this.button.addChild(this.buttontext);
 
+
+            var form = document.createElement('form'),
+                name = document.createElement('input'),
+                submit = document.createElement('input');
+
+            $(form).submit(function () {
+                $('<input />').attr('type', 'hidden')
+                    .attr('name', 'score')
+                    .attr('value', gameState.getScore())
+                    .appendTo(form);
+                return true;
+            });
+
+            form.appendChild(name);
+            form.appendChild(submit);
+            document.body.appendChild(form);
         },
 
-        update : function () {
-        }
+        update : function () {}
 
-    }
+    };
 
     return endState;
-})
+});
