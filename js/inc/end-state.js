@@ -23,11 +23,16 @@ define(['Phaser', 'inc/game-state'], function (Phaser, gameState) {
               */
             var container = document.createElement('div');
             container.setAttribute('id', 'container');
-            var submit_name  = '<form id="scoreForm"><input type="text" name="name" value="Your Name Here"><input type="submit" value="Submit"></form>';
+            var submit_name  = '<form id="scoreForm"><input id="name" type="text" name="name" placeholder="Your Name Here"><input id="sub-butt" type="submit" value="Submit"></form>';
             container.innerHTML = submit_name;
             document.body.appendChild(container);
-            document.getElementById("container").setAttribute(
-                    "style", "z-index: 999; position: absolute; top: 200px; left: 225px; font-size:25px;");
+            document.getElementById("sub-butt").setAttribute("style",
+                "padding: 9px; position: absolute; top: 0px; left: 335px; background-color: white; border-radius: 2px; border: 2px;");
+            document.getElementById("name").setAttribute("style",
+                "font-size: 25px; display:inline-block; border-radius: 1px; padding: 2px;");
+            document.getElementById("container").setAttribute("style", 
+                "z-index: 999; position: absolute; top: 200px; left: 225px; font-size:25px;");
+
             $('#scoreForm').submit(function () {
                 $.post('/highscores', {
                     name: this.name.value,
@@ -35,6 +40,10 @@ define(['Phaser', 'inc/game-state'], function (Phaser, gameState) {
                 }, function (data, stat) {
                     if (stat === 'success') {
                         console.info('score received!');
+                        $('#name').attr('disabled', 'true')
+                            .css({ background: 'green' });
+                    } else {
+                        $('#name').css({ background: 'lightred' });
                     }
                 });
                 return false;
@@ -60,10 +69,10 @@ define(['Phaser', 'inc/game-state'], function (Phaser, gameState) {
 
             $(form).submit(function () {
                 $('<input />').attr('type', 'hidden')
-                .attr('name', 'score')
-                .attr('value', gameState.getScore())
-                .appendTo(form);
-            return true;
+                    .attr('name', 'score')
+                    .attr('value', gameState.getScore())
+                    .appendTo(form);
+                return true;
             });
 
             form.appendChild(name);
