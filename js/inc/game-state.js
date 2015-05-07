@@ -131,7 +131,7 @@ define(['Phaser', 'test'], function (Phaser, test) {
         }
 
         if (getScore() >= app.MAXSCORE) {
-            this.game.state.start('end', true, false);
+            app.game.state.start('end', true, false);
         }
     };
 

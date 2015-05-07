@@ -1,6 +1,6 @@
 /*global define, app*/
 
-define(['Phaser'], function (Phaser) {
+define(['Phaser', 'inc/game-state'], function (Phaser, gameState) {
     'use strict';
     var endState = function (game) {};
 
@@ -13,7 +13,7 @@ define(['Phaser'], function (Phaser) {
             this.buttontext = game.add.text(270, 100, 'You Win!', { font: "32px Arial", fill: "#FFFFFF", align: "center" });
             this.buttontext.fixedToCamera = true;
 
-            this.buttontext = game.add.text(200, 300, 'Your score was ' + app.score, { font: "32px Arial", fill: "#FFFFFF", align: "center" });
+            this.buttontext = game.add.text(200, 300, 'Your score was ' + gameState.getScore(), { font: "32px Arial", fill: "#FFFFFF", align: "center" });
             this.buttontext.fixedToCamera = true;
 
             this.button = game.add.button(350, 500, 'startButton', function () { game.state.start('play'); }, this);

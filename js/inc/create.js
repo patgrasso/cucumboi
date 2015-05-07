@@ -11,7 +11,7 @@ define([
         var game = app.game;
 
         game.state.add('play', gameState.gameState);
-        game.state.add('end', gameState.endState);
+        game.state.add('end', endState);
         //game.state.add('menu', menuState);
         game.state.start('play', true, false);
     };
