@@ -13,23 +13,34 @@ define(['Phaser', 'inc/game-state'], function (Phaser, gameState) {
             this.buttontext = game.add.text(315, 100, 'You Win!', { font: "32px Arial", fill: "#FFFFFF", align: "center" });
             this.buttontext.fixedToCamera = true;
 
-			/*var htmlbody = document.getElementsByTagName("BODY");
-			var input = document.createElement('input'); 
-			input.type = "text"; 
-			input.setAttribute("id", "name");
-			document.body.appendChild(input);
-			document.getElementById("name").setAttribute(
-				"style", "z-index: 999; position: absolute; top: 200px; left: 225px; font-size:25px;");
-			*/
-			var container = document.createElement('div');
-			container.setAttribute('id', 'container');
-			var submit_name  = '<form><input type="text" name="firstname" value="Your Name Here"><input type="submit" value="Submit"></form>';
-			container.innerHTML = submit_name;
-			document.body.appendChild(container);
-			document.getElementById("container").setAttribute(
-				"style", "z-index: 999; position: absolute; top: 200px; left: 225px; font-size:25px;");
-			
-			
+            /*var htmlbody = document.getElementsByTagName("BODY");
+              var input = document.createElement('input'); 
+              input.type = "text"; 
+              input.setAttribute("id", "name");
+              document.body.appendChild(input);
+              document.getElementById("name").setAttribute(
+              "style", "z-index: 999; position: absolute; top: 200px; left: 225px; font-size:25px;");
+              */
+            var container = document.createElement('div');
+            container.setAttribute('id', 'container');
+            var submit_name  = '<form id="scoreForm"><input type="text" name="name" value="Your Name Here"><input type="submit" value="Submit"></form>';
+            container.innerHTML = submit_name;
+            document.body.appendChild(container);
+            document.getElementById("container").setAttribute(
+                    "style", "z-index: 999; position: absolute; top: 200px; left: 225px; font-size:25px;");
+            $('#scoreForm').submit(function () {
+                $.post('/highscores', {
+                    name: this.name.value,
+                    score: gameState.getScore()
+                }, function (data, stat) {
+                    if (stat === 'success') {
+                        console.info('score received!');
+                    }
+                });
+                return false;
+            });
+
+
             this.buttontext = game.add.text(250, 300, 'Your score was ' + gameState.getScore(), { font: "32px Arial", fill: "#FFFFFF", align: "center" });
             this.buttontext.fixedToCamera = true;
 
@@ -49,10 +60,10 @@ define(['Phaser', 'inc/game-state'], function (Phaser, gameState) {
 
             $(form).submit(function () {
                 $('<input />').attr('type', 'hidden')
-                    .attr('name', 'score')
-                    .attr('value', gameState.getScore())
-                    .appendTo(form);
-                return true;
+                .attr('name', 'score')
+                .attr('value', gameState.getScore())
+                .appendTo(form);
+            return true;
             });
 
             form.appendChild(name);
