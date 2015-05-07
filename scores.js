@@ -44,8 +44,24 @@ function getScore(name, callback) {
 }
 
 
+function getHighScores(count, callback) {
+    ScoreDetails.find({
+        $query: {},
+        $orderby: { score: -1 },
+        $maxScan: parseInt(count, 10)
+    }, function (err, data) {
+        if (err || !data) {
+            callback(null);
+        }
+        console.log(data);
+        callback(data);
+    });
+}
+
+
 
 module.exports = {
     insertScore: insertScore,
+    getHighScores: getHighScores,
     getScore: getScore
 };

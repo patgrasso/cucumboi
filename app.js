@@ -20,5 +20,24 @@ app.post('/highscores', function (req, res) {
     scores.insertScore(req.body.name, req.body.score, res);
 });
 
+app.post('/getscore', function (req, res) {
+    scores.getScore(req.body.name, function (score) {
+        res.send(score);
+    });
+});
+
+app.get('/gethighscores', function (req, res) {
+    scores.getHighScores(req.body.count || 10, function (scoreArr) {
+        scoreArr = scoreArr.map(function (score) {
+            return {
+                name: score.name,
+                score: score.score
+            };
+        });
+        res.send(scoreArr);
+    });
+});
+
+scores.getHighScores(1, console.log);
 
 app.listen(process.env.PORT || 8000);
