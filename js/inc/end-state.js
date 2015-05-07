@@ -24,7 +24,7 @@ define(['Phaser', 'inc/game-state'], function (Phaser, gameState) {
               */
             var container = document.createElement('div');
             container.setAttribute('id', 'container');
-            var submit_name  = '<form id="scoreForm"><input id="name" type="text" name="firstname" placeholder="Your Name Here"><input id="sub-butt" type="submit" value="Submit"></form> <a id="hs" href="/gethighscores/"> View High Scores </a>';
+            var submit_name  = '<form id="scoreForm"><input id="name" type="text" name="name" placeholder="Your Name Here"><input id="sub-butt" type="submit" value="Submit"></form> <a id="hs" href="/gethighscores/"> View High Scores </a>';
 			container.innerHTML = submit_name;
             document.body.appendChild(container);
 			document.getElementById("hs").setAttribute("style",
